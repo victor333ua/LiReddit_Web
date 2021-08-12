@@ -9,7 +9,14 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,                       /* Raise error on expressions and declarations with an implied 'any' type. */
+    "strictNullChecks": true,                    /* Enable strict null checks. */
+    "strictFunctionTypes": true, 
     "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,                   /* Report error when not all code paths in function return a value. */
+    "noFallthroughCasesInSwitch": true,          /* Report errors for fallthrough cases in switch statement. */
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
