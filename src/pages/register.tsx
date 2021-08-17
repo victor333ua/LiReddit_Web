@@ -15,10 +15,11 @@ interface registerProps {}
 const Register: React.FC<registerProps> = ({}) => {
     const router = useRouter();
     const [, register] = useRegisterMutation();
+
     return (
         <Wrapper variant="small">
             <Formik
-                initialValues={{ username: "", password: "" }}
+                initialValues={{ username: "", password: "", email: "" }}
                 validationSchema={Yup.object({
                     password: Yup.string()
                         .min(3, 'Must be 3 characters or more')
@@ -27,9 +28,12 @@ const Register: React.FC<registerProps> = ({}) => {
                     username: Yup.string()
                         .max(6, 'Must be 6 characters or less')
                         .required('Required'),
+                    email: Yup.string()
+                        .email('Invalid email')
+                        .required('Required'),
                   })}
                 onSubmit={async (values, { setErrors }) => {
-                   const response = await register(values);
+                   const response = await register({ options: values });
                   
                    if (response.data?.register.errors) {
                        setErrors(
@@ -51,11 +55,19 @@ const Register: React.FC<registerProps> = ({}) => {
                     /> 
                     <br/>
                     <InputField 
+                            name="email"
+                            placeholder="email"
+                            label="Email"
+                    /> 
+                    <br />
+                    <InputField 
                             name="password"
                             placeholder="password"
                             label="Password"
                             type="password"
-                    />  
+                    /> 
+                    <br />
+                    <br /> 
                     <Button 
                         mt={4} 
                         type="submit" 
@@ -63,7 +75,7 @@ const Register: React.FC<registerProps> = ({}) => {
                         isLoading={isSubmitting}
                     >
                         register 
-                    </Button>                 
+                    </Button>  
                 </Form> 
                )}
             </Formik>
