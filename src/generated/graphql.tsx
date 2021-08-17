@@ -184,7 +184,7 @@ export type RegisterMutation = (
 );
 
 export type ResetPasswordMutationVariables = Exact<{
-  userId: Scalars['Float'];
+  token: Scalars['String'];
   password: Scalars['String'];
 }>;
 
@@ -283,8 +283,8 @@ export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const ResetPasswordDocument = gql`
-    mutation ResetPassword($userId: Float!, $password: String!) {
-  resetPassword(userId: $userId, password: $password)
+    mutation ResetPassword($token: String!, $password: String!) {
+  resetPassword(token: $token, password: $password)
 }
     `;
 
