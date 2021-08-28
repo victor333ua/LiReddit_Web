@@ -54,7 +54,11 @@ const Login: React.FC<loginProps> = ({}) => {
                        );
                    }
                    else if (response.data?.login.user) {
-                       router.push("/");
+                       if (typeof router.query.next === 'string') {
+                          router.push(router.query.next) ;
+                       } else {
+                           router.push("/");
+                       }
                    }                   
                 }}
             >
@@ -63,7 +67,7 @@ const Login: React.FC<loginProps> = ({}) => {
                     <InputField 
                             name="usernameOrEmail"
                             placeholder="username or email"
-                            label="User Name Or Email"
+                            label="Username or Email"
                     /> 
                     <br/>
                     <InputField 

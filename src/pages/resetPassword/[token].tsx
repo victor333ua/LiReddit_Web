@@ -11,10 +11,10 @@ import * as Yup from 'yup';
 import { NextPage } from 'next';
 
 
-export const ResetPassword: NextPage<{ token: string }> = ({ token }) => {
+export const ResetPassword: NextPage = () => {
     const [, reset] = useResetPasswordMutation();
     const router = useRouter();
-  //  const { token } = router.query;
+    const { token } = router.query;
     const [error, setError] = useState('');
     
     return (
@@ -35,7 +35,9 @@ export const ResetPassword: NextPage<{ token: string }> = ({ token }) => {
                         return;
                     }
                     const response = await reset({
-                        token,
+                        token: typeof token === undefined 
+                            ? ""
+                            : token as string,
                         password: values.password 
                     });
                     if (!response.data?.resetPassword) {
@@ -76,10 +78,4 @@ export const ResetPassword: NextPage<{ token: string }> = ({ token }) => {
         </Wrapper>
     )
 };
-
-ResetPassword.getInitialProps = ({ query }) => {
-    return {
-      token: query.token as string,
-    };
-  };
 export default withUrqlClient(createUrqlClient)(ResetPassword);
