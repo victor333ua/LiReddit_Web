@@ -8,9 +8,8 @@ interface NavbarProps {
 }
 
 const NavBar: React.FC<NavbarProps> = ({}) => {
-    const [{ data, fetching }] = useMeQuery({
-        pause: isServer()
-    });
+    const [{ data, fetching }] = useMeQuery();
+    
     const [{fetching: logoutFetching}, logout] = useLogoutMutation();
     let body = null;
 

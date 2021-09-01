@@ -5,11 +5,13 @@ import { Layout } from "../components/Layout";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { usePostsQuery } from './../generated/graphql';
 import NextLink from "next/link";
+import { UpdootSection } from "../components/UpdootSection";
 
 const Index = () => { 
   const [variables, setVariables] = useState({ limit: 10, cursor: null as null | string })
   const [{ data, fetching }] = usePostsQuery({ variables });
   // const { posts, hasMore } = data?.posts;
+
   return (
     <Layout>
       <Flex mb={6} align="center">
@@ -25,17 +27,23 @@ const Index = () => {
           <>
             <Stack spacing={8} >
               {data.posts.posts.map(p => (
-                <Box
-                  key={p.id}
-                  p={5}
-                  shadow="md"
-                  borderWidth="1px"
-                  flex="1"
-                  borderRadius="md"
-                >
-                  <Heading fontSize="xl">{p.title}</Heading>
-                  <Text mt={4}>{p.textSnippet}</Text>
-                </Box>
+                 <Box
+                    key={p.id}
+                    p={5}
+                    shadow="md"
+                    borderWidth="1px"
+                    flex="1"
+                    borderRadius="md"
+                  >
+                    <Flex >
+                      <UpdootSection post={p} />
+                      <Flex flexDirection="column">
+                        <Heading fontSize="xl">{p.title}</Heading>
+                        <Text fontSize="sm" as="i">posted by {p.creator.username}</Text>
+                        <Text mt={4}>{p.textSnippet}</Text>
+                      </Flex>
+                    </Flex>
+                  </Box>                
               ))}
             </Stack>
           
