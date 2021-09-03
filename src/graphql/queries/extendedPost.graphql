@@ -1,0 +1,5 @@
+query ExtendedPost($id: Float!) {
+  post(id: $id) {
+      ...ExtendedPost
+  }
+}

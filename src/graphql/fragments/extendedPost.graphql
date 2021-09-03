@@ -1,0 +1,9 @@
+fragment ExtendedPost on Post {
+    id
+    title
+    text
+    createdAt
+    creator {
+        id
+    }
+} 

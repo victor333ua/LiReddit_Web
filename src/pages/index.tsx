@@ -1,50 +1,35 @@
-import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import React, { useState } from "react"
 import { Layout } from "../components/Layout";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { usePostsQuery } from './../generated/graphql';
-import NextLink from "next/link";
-import { UpdootSection } from "../components/UpdootSection";
+import { Post } from "../components/Post";
 
 const Index = () => { 
   const [variables, setVariables] = useState({ limit: 10, cursor: null as null | string })
   const [{ data, fetching }] = usePostsQuery({ variables });
-  // const { posts, hasMore } = data?.posts;
+ 
+  if (!data) {
+      return (
+        <Layout>
+          {fetching && <div>loading...</div>}
+          {!fetching && <div>server error</div>}
+        </Layout>
+      )
+  }
+  const posts = data.posts?.posts;
 
   return (
     <Layout>
-      <Flex mb={6} align="center">
+      <Flex mb={6}>
         <Heading>LiReddit</Heading>
-        <NextLink href="/create-post">
-          <Link  ml="auto" >create post</Link>
-        </NextLink>
       </Flex>
        
-       {!data 
-        ? (<div>loading...</div>) 
-        : (
+       {posts && (
           <>
             <Stack spacing={8} >
-              {data.posts.posts.map(p => (
-                 <Box
-                    key={p.id}
-                    p={5}
-                    shadow="md"
-                    borderWidth="1px"
-                    flex="1"
-                    borderRadius="md"
-                  >
-                    <Flex >
-                      <UpdootSection post={p} />
-                      <Flex flexDirection="column">
-                        <Heading fontSize="xl">{p.title}</Heading>
-                        <Text fontSize="sm" as="i">posted by {p.creator.username}</Text>
-                        <Text mt={4}>{p.textSnippet}</Text>
-                      </Flex>
-                    </Flex>
-                  </Box>                
-              ))}
+              {posts.map(p => p ? <Post post={p}/> : null)}
             </Stack>
           
             {data.posts.hasMore && 
@@ -55,7 +40,7 @@ const Index = () => {
                   isLoading={fetching} 
                   onClick={() => setVariables({
                     limit: variables.limit, 
-                    cursor: data.posts.posts[data.posts.posts.length - 1].createdAt
+                    cursor: posts[posts.length - 1].createdAt
                   })}
                 >
                   load more
@@ -63,8 +48,7 @@ const Index = () => {
               </Flex>
             }
           </>
-        )
-       }
+       )}
     </Layout>
   )
 }

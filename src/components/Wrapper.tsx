@@ -9,7 +9,7 @@ interface WrapperProps {
 
 export const Wrapper: React.FC<WrapperProps> = ({ 
     children,
-    variant = "regular"
+    variant
  }) => {
         return (
             <Box
