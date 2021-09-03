@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Text } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { NextPage } from 'next';
 import { withUrqlClient } from 'next-urql';
@@ -6,49 +6,35 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { InputField } from '../../../components/InputField';
 import { Layout } from '../../../components/Layout';
-import { useExtendedPostQuery } from '../../../generated/graphql';
+import { Loader } from '../../../components/Loader';
+import { ServerError } from '../../../components/ServerError';
 import { createUrqlClient } from '../../../utils/createUrqlClient';
+import { usePostFromPageRoute } from '../../../utils/usePostFromRoute';
 import { useUpdatePostMutation } from './../../../generated/graphql';
 
 export const EditPost: NextPage = ({}) => {
     const router = useRouter();
-    const { id } = router.query;
-    const intId = typeof(id) === 'string' ?  parseInt(id) : -1;
-
-    const [{ data, fetching, error }] = useExtendedPostQuery({
-        pause: intId === -1,
-        variables: { id: intId }
-    });
-
     const [, updatePost] = useUpdatePostMutation();
+    const{ data, fetching, error, intId } = usePostFromPageRoute();
 
     if (fetching) {
-        return (
-          <Layout>
-            <div>loading...</div>
-          </Layout>
-        )
-    };
-    const post = data?.post;
-    if (!post) return (
-        <Layout>
-            <Box>
-                <Heading>Server Error</Heading>
-                <Text>{error?.message}</Text>
-            </Box>
-        </Layout>
-    );
+        return <Loader />;
+     };
+     const post = data?.post;
+     if (!post) {
+         return <ServerError error={error}/>      
+     };
 
-    return (
+     return (
         <Layout>
             <Formik
                 initialValues={{ title: post.title, text: post.text }}
                 onSubmit={async (values) => {
                     const { error } = await updatePost({ id: intId, ...values });
                     if (!error) {
-                        router.back();
+                        router.back(); return null;
                     } else {
-                        console.log("error: ", error.message);
+                        return <ServerError error={error}/>  
                     }
                 }}
             >

@@ -5,34 +5,22 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { ButtonsPostOperations } from '../../components/ButtonsPostOperations';
 import { Layout } from '../../components/Layout';
+import { Loader } from '../../components/Loader';
+import { ServerError } from '../../components/ServerError';
 import { createUrqlClient } from '../../utils/createUrqlClient';
-import { useExtendedPostQuery } from './../../generated/graphql';
+import { usePostFromPageRoute } from '../../utils/usePostFromRoute';
 
 const ExtendedPost: NextPage = () => {
-    const router = useRouter();
-    const { id } = router.query;
-    const intId = typeof(id) === 'string' ?  parseInt(id) : -1;
+    const{ data, fetching, error } = usePostFromPageRoute();
 
-    const [{ data, fetching }] = useExtendedPostQuery({
-        pause: intId === -1,
-        variables: { id: intId }
-    });
-
-    if (!data) {
-        return (
-          <Layout>
-            {fetching && <div>loading...</div>}
-            {!fetching && <div>server error</div>}
-          </Layout>
-        )
-    }
+    if (fetching) {
+        return <Loader />;
+    };
     const post = data?.post;
-    if (!post) return (
-        <Layout>
-            <div>No data</div>
-        </Layout>
-    );
-   
+    if (!post) {
+        return <ServerError error={error}/>      
+    };
+      
     return (post && (
         <Layout> 
             <Flex justify="space-between">          
