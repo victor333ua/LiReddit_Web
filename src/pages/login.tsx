@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
-import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Button, Flex, Text } from '@chakra-ui/react';
+import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Flex, Text } from '@chakra-ui/react';
 import { Wrapper } from '../components/Wrapper';
 import { InputField } from '../components/InputField';
 import { useForgotPasswordMutation, useLoginMutation } from '../generated/graphql';

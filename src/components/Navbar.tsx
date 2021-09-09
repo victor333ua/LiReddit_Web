@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import NextLink from 'next/link'
 import { useMeQuery, useLogoutMutation, RegularUserFragment } from '../generated/graphql';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Wrapper, WrapperVariant } from './Wrapper';
+import { WrapperVariant } from './Wrapper';
 
 interface NavbarProps {
     setCurrentUser: Dispatch<SetStateAction<RegularUserFragment | null>>;

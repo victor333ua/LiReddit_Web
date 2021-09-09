@@ -1,7 +1,6 @@
 import { Flex, Heading, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { withUrqlClient } from 'next-urql';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { ButtonsPostOperations } from '../../components/ButtonsPostOperations';
 import { Layout } from '../../components/Layout';
