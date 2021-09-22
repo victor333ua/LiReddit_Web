@@ -29,7 +29,7 @@ const Index = () => {
        {posts && (
           <>
             <Stack spacing={8} >
-              {posts.map(p => p ? <Post post={p}/> : null)}
+              {posts.map(p => p ? <Post key={p.id} post={p}/> : null)}
             </Stack>
           
             {data.posts.hasMore && 

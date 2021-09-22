@@ -3,15 +3,15 @@ import NextLink from 'next/link';
 import React, { useContext } from 'react';
 import { PostSnippetFragment } from '../generated/graphql';
 import { ButtonsPostOperations } from './ButtonsPostOperations';
-import { LoggedContext } from './Layout';
 import { UpdootSection } from './UpdootSection';
+import { UserContext } from './UserProvider';
 
 interface PostProps {
     post: PostSnippetFragment
 }
 
 export const Post: React.FC<PostProps> = ({ post }) => {
-    const currentUser = useContext(LoggedContext);
+    const { user: currentUser } = useContext(UserContext);
     
     return (
         <Box

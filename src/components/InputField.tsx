@@ -12,9 +12,9 @@ import React from 'react'
 
 type InputOrTextareaProps = 
   {
-    textarea?: false  
+    isTextarea?: false
   } & InputProps | {   
-    textarea: true;
+    isTextarea: true;
   } & TextareaProps;
 
 type InputFieldProps = 
@@ -24,7 +24,7 @@ type InputFieldProps =
   } & InputOrTextareaProps;
 
 const TextComponent: React.FC<InputOrTextareaProps> = (props) => {
-  if (props.textarea) return <Textarea {...props} />
+  if (props.isTextarea) return <Textarea {...props} />
   return <Input {...props} />
 } 
 

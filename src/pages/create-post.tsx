@@ -37,7 +37,7 @@ const CreatePost: React.FC<{}> = ({}) => {
                             name="text"
                             placeholder="...text"
                             label="Body"
-                            textarea
+                            isTextarea={true}
                     />  
                     <Button 
                         mt={8} 

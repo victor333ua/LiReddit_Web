@@ -3,7 +3,7 @@ import { Flex, IconButton } from '@chakra-ui/react';
 import router from 'next/router';
 import React, { useContext } from 'react'
 import { useDeletePostMutation } from '../generated/graphql';
-import { LoggedContext } from './Layout';
+import { UserContext } from './UserProvider';
 
 interface ButtonsPostOperationsProps {
     post: {
@@ -16,7 +16,7 @@ interface ButtonsPostOperationsProps {
 
 export const ButtonsPostOperations: React.FC<ButtonsPostOperationsProps> = ({ post }) => {
     const [, deletePost] = useDeletePostMutation();
-    const currentUser = useContext(LoggedContext);
+    const { user: currentUser } = useContext(UserContext);
 
     const isMyPost = post?.creator.id === currentUser?.id;
     return (

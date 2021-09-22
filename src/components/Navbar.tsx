@@ -1,20 +1,27 @@
 import { Box, Button, Flex, IconButton, Link } from '@chakra-ui/react';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { useContext, useEffect } from 'react';
 import NextLink from 'next/link'
-import { useMeQuery, useLogoutMutation, RegularUserFragment } from '../generated/graphql';
+import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { WrapperVariant } from './Wrapper';
+import { User, UserContext } from './UserProvider';
 
 interface NavbarProps {
-    setCurrentUser: Dispatch<SetStateAction<RegularUserFragment | null>>;
-    variant?:  WrapperVariant 
+    variant?:  WrapperVariant ;
 }
 
-const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
+const NavBar: React.FC<NavbarProps> = ({ variant }) => {
     const [{ data, fetching }] = useMeQuery();    
     const [{fetching: logoutFetching}, logout] = useLogoutMutation();
 
+    const { setUser } = useContext(UserContext);
+
     let body = null;
+    let currentUser: User = null;
+
+    useEffect(() => {
+        currentUser && setUser(currentUser);
+    }, [currentUser])
 
     if(fetching) {
 
@@ -25,11 +32,10 @@ const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
                     <Link mr={2}>login</Link>
                 </NextLink>
                 <NextLink href="/register">
-                    <Link>register</Link>
+                    <Link mr={2}>register</Link>
                 </NextLink>
             </>                                 
         )
-        setCurrentUser(null);
     } else {
         body = (
             <Flex align="center">
@@ -45,6 +51,7 @@ const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
                 </NextLink>
                 <Box mr={2}>{data.me.username}</Box>
                 <Button 
+                    mr={2}
                     variant="link"
                     isLoading={logoutFetching}
                     onClick={() => logout()}
@@ -53,7 +60,7 @@ const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
                 </Button>
             </Flex>                     
         )
-        setCurrentUser(data.me);
+        currentUser = data.me;
     }
         return (
             <Flex zIndex={1} position="sticky" top={0} bg="tan" p={4}>
@@ -62,7 +69,6 @@ const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
                         <IconButton
                             aria-label="home"
                             icon={<ExternalLinkIcon/>}
-                            ml={4}
                             bg="gray.300"
                             border="2px"
                             borderColor="gray.600"
@@ -75,5 +81,5 @@ const NavBar: React.FC<NavbarProps> = ({ setCurrentUser, variant }) => {
                 </Flex>
             </Flex>
         );
-}
+};
 export default NavBar;

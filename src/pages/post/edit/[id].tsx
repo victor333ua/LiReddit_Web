@@ -50,7 +50,7 @@ export const EditPost: NextPage = ({}) => {
                             name="text"
                             placeholder="...text"
                             label="Body"
-                            textarea
+                            isTextarea
                             resize="vertical"
                     />  
                     <Button 

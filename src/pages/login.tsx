@@ -13,10 +13,12 @@ interface loginProps {}
 
 const Login: React.FC<loginProps> = ({}) => {
     const router = useRouter();
+
     const [, login] = useLoginMutation();
+    const [, forgotPassword] = useForgotPasswordMutation();
+
     const [messageEmail, setMessageEmail] = useState('');
 
-    const [, forgotPassword] = useForgotPasswordMutation();
     const passwordRequest = async (
         usernameOrEmail: string,
         setFieldError:  (field: string, message: string | undefined) => void,
